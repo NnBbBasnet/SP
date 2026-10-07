@@ -16,19 +16,21 @@
 .resume.a4-sheet:before{content:none}
 .resume.a4-sheet>.a4-watermark{position:absolute;z-index:0;top:85mm;left:57mm;width:90mm;height:75mm;object-fit:contain;opacity:.10;pointer-events:none}
 .resume.a4-sheet>.fit-content{position:relative;z-index:1;display:block!important;columns:1!important;column-count:1!important;column-width:auto!important;grid-template-columns:none!important}
-.resume.a4-sheet .resume-head{position:relative;min-height:32mm;margin:0 0 4mm;padding:7mm 8mm;border-radius:9px;background:linear-gradient(115deg,#5c1420,#762b38);color:#fff;box-shadow:none}
+.resume.a4-sheet .resume-head{position:relative;z-index:1;width:100%;height:42mm;min-height:42mm;max-height:42mm;overflow:hidden;margin:0 0 4mm;padding:5mm 8mm;border-radius:9px;background:linear-gradient(115deg,#5c1420,#762b38);color:#fff;box-shadow:none}
 .resume.a4-sheet .resume-head img{float:right;width:16mm;height:16mm;object-fit:contain;margin-left:5mm}
-.resume.a4-sheet .resume-head h2{margin:0 0 3mm;color:#fff;font-size:22.5pt;line-height:1.05;letter-spacing:.3pt;text-transform:none}
-.resume.a4-sheet .resume-head p{margin:1mm 0;color:#fff;font-size:8.8pt;line-height:1.25;overflow-wrap:anywhere}
+.resume.a4-sheet .resume-head h2{margin:0 0 3mm;color:#fff;font-size:22.5pt;line-height:1.05;letter-spacing:.3pt;text-transform:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.resume.a4-sheet .resume-head p{margin:.2mm 0;color:#fff;font-size:8.8pt;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .resume.a4-sheet h3{margin:3mm 0 1.5mm;padding:0 0 1.4mm;border:0;border-bottom:1px solid #eadfe0;color:#5c1420;font-size:9.6pt;letter-spacing:.8pt;text-transform:uppercase}
 .resume.a4-sheet p{margin:1mm 0;font-size:9.2pt;line-height:1.22;overflow-wrap:anywhere}
-.resume.a4-sheet .item{display:block!important;width:100%!important;grid-column:1/-1!important;margin:1.2mm 0;padding:1.4mm 2mm;border:0;border-left:2px solid rgba(216,189,144,.55);border-radius:0 4px 4px 0;background:rgba(255,255,255,0)!important;break-inside:auto;page-break-inside:auto}
+.resume.a4-sheet .item{display:block!important;width:100%!important;max-width:100%!important;float:none!important;clear:both!important;grid-column:1/-1!important;margin:1.2mm 0;padding:1.4mm 2mm;border:0;border-left:2px solid rgba(216,189,144,.55);border-radius:0 4px 4px 0;background:transparent!important;break-inside:auto;page-break-inside:auto}
 .resume.a4-sheet .item p{font-size:8.6pt;line-height:1.16}
 .resume.a4-sheet .sub{color:#667085;font-size:9.2pt;font-style:italic}
 .resume.a4-sheet .summary{margin:0 0 2mm;padding:2.5mm 3mm;border-left:2px solid rgba(216,189,144,.55);border-radius:0 5px 5px 0;background:rgba(255,255,255,0)!important}
 .resume.a4-sheet .skills{display:flex;flex-wrap:wrap;gap:1mm}
 .resume.a4-sheet .skill{display:inline-block;margin:.4mm;padding:1mm 2mm;border:1px solid rgba(234,223,224,.7);border-radius:99px;background:rgba(255,255,255,0)!important;color:#5c1420;font-size:8.2pt}
-.resume.a4-sheet .resume-section{display:block!important;width:100%!important;grid-column:1/-1!important;column-span:all!important;columns:1!important;break-inside:auto;page-break-inside:auto}
+.resume.a4-sheet .resume-section{display:block!important;width:100%!important;max-width:100%!important;float:none!important;clear:both!important;flex:0 0 100%!important;grid-column:1/-1!important;column-span:all!important;columns:1!important;column-count:1!important;break-inside:auto;page-break-inside:auto}
+.resume.a4-sheet .reference-line{display:block;width:100%;max-width:100%;white-space:normal;overflow-wrap:anywhere;margin:.5mm 0}
+.resume.a4-sheet .wide-description{display:block;width:100%;max-width:100%;white-space:normal;overflow-wrap:anywhere}
 @media print{body{margin:0;background:#fff}.top,#notice,#app,#done,#final>.warning,#final>.row,#submitError{display:none!important}main.wrap{max-width:none;margin:0;padding:0}#final{display:block!important;width:210mm;height:297mm;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important}#final .a4-frame{width:210mm;height:297mm;max-width:none;aspect-ratio:auto;margin:0;border:0;box-shadow:none}#finalResume{transform:none!important}}
 </style>
 </head>
@@ -82,7 +84,8 @@ function updateA4PreviewFrames(){document.querySelectorAll('.a4-frame').forEach(
 if('ResizeObserver' in window){const a4FrameObserver=new ResizeObserver(updateA4PreviewFrames);document.querySelectorAll('.a4-frame').forEach(frame=>a4FrameObserver.observe(frame))}
 window.addEventListener('resize',updateA4PreviewFrames);
 function profileLayout(){
- const profileChars=JSON.stringify(data||{}).length;
+ const printable={careerObjective:data.careerObjective||'',education:data.education||[],experience:data.experience||[],skills:data.skills||[],projects:data.projects||[],achievements:data.achievements||[],references:data.references||[]};
+ const profileChars=JSON.stringify(printable).length;
  const keys=['education','experience','skills','projects','achievements','references'];let profileItems=0,profileSections=0;
  keys.forEach(k=>{const populated=(data[k]||[]).filter(o=>o&&Object.values(o).some(v=>String(v==null?'':v).trim()!==''));profileItems+=populated.length;if(populated.length)profileSections++});
  // Estimate wrapped height using the same Chromium-calibrated model as Code.gs.
@@ -100,7 +103,7 @@ function renderPreview(){
  $('#live').className='resume a4-sheet';
  $('#live').style.zoom=1;
  let html=`<div class="resume-head">${LOGO_DATA?`<img src="${LOGO_DATA}" alt="">`:''}<h2>${esc(fullname)}</h2><p>${esc(prog||'Program')} Candidate · Roll No: ${esc(data.collegeRollNo||'—')}</p><p>College: ${esc(data.collegeEmail||'')} · Personal: ${esc(data.personalEmail||'')} · ${esc(data.phone||'')}</p>${data.major||data.minor?`<p>${data.major?`Major: ${esc(data.major)}`:''}${data.major&&data.minor?' · ':''}${data.minor?`Minor: ${esc(data.minor)}`:''}</p>`:''}${data.address?`<p>${esc(data.address)}</p>`:''}${data.linkedinUrl?`<p>${esc(data.linkedinUrl)}</p>`:''}</div>`;
- const section=(title,body)=>body?`<section class="resume-section"><h3>${title}</h3>${body}</section>`:'';
+  const section=(title,body)=>body?`<section class="resume-section" style="display:block!important;width:100%!important;max-width:100%!important;float:none!important;clear:both!important;grid-column:1/-1!important"><h3>${title}</h3>${body}</section>`:'';
  const blocks=(arr,fn)=>(arr||[]).filter(o=>o&&Object.values(o).some(v=>String(v==null?'':v).trim()!=='' )).map(fn).filter(Boolean).join('');
  const summary=section('Profile Summary',String(data.careerObjective||'').trim()?`<div class="summary"><p>${text(data.careerObjective)}</p></div>`:'');
  const education=section('Education',blocks(data.education,o=>{const title=[o.degree,o.institution].filter(v=>String(v||'').trim()).map(esc).join(' at ');const details=[o.boardOrUniversity,[o.startYear,o.endYearOrExpected].filter(v=>String(v||'').trim()).join('–'),o.scoreOrGpa].filter(v=>String(v||'').trim()).map(esc).join(' · ');return title||details?`<div class="item">${title?`<b>${title}</b>`:''}${details?`<p>${details}</p>`:''}</div>`:''}));
@@ -108,8 +111,8 @@ function renderPreview(){
  const skills=section('Professional Skills',data.skills&&data.skills.some(o=>String(o.name||'').trim())?`<div class="skills">${data.skills.filter(o=>String(o.name||'').trim()).map(o=>`<span class="skill">${esc(o.name)}</span>`).join('')}</div>`:'');
  const projects=section('Projects',blocks(data.projects,o=>{const title=String(o.title||'').trim();const details=[o.role,o.toolsUsed,o.description,o.projectUrl].filter(v=>String(v||'').trim()).map(text).map(x=>`<p>${x}</p>`).join('');return title||details?`<div class="item">${title?`<b>${esc(title)}</b>`:''}${details}</div>`:''}));
  const achievements=section('Achievements',blocks(data.achievements,o=>{const title=[o.title,o.organization].filter(v=>String(v||'').trim()).map(esc).join(' · ');const details=[o.year,o.description].filter(v=>String(v||'').trim()).map(text).join(' · ');return title||details?`<div class="item">${title?`<b>${title}</b>`:''}${details?`<p>${details}</p>`:''}</div>`:''}));
- const references=section('References',blocks(data.references,o=>{const heading=[o.name,o.designation,o.organization].filter(v=>String(v||'').trim()).map(esc).join(' · ');const contact=[o.email,o.phone].filter(v=>String(v||'').trim()).map(esc).join(' · ');const relation=String(o.relation||'').trim();return heading||contact||relation?`<div class="item">${heading?`<b>${heading}</b>`:''}${contact?`<p>${contact}</p>`:''}${relation?`<p class="sub">${esc(relation)}</p>`:''}</div>`:''}));
-  $('#live').innerHTML=`${LOGO_DATA?`<img class="a4-watermark" src="${LOGO_DATA}" alt="">`:''}<div class="fit-content" style="zoom:${fitZoom};width:${100/fitZoom}%">${html}${summary}${education}${experience}${skills}${projects}${achievements}${references}</div>`;updateA4PreviewFrames();
+ const references=section('References',blocks(data.references,o=>{const info=[o.name,o.designation,o.organization].filter(v=>String(v||'').trim()).map(esc);if(String(o.relation||'').trim())info.push(`Relation: ${esc(o.relation)}`);const contact=[o.email?`Email: ${esc(o.email)}`:'',o.phone?`Phone: ${esc(o.phone)}`:''].filter(Boolean);return info.length||contact.length?`<div class="item"><div class="reference-line"><b>${info.join(' · ')}</b></div>${contact.length?`<div class="reference-line">${contact.join(' · ')}</div>`:''}</div>`:''}));
+ $('#live').innerHTML=`${LOGO_DATA?`<img class="a4-watermark" src="${LOGO_DATA}" alt="">`:''}${html}<div class="fit-content" style="zoom:${fitZoom};width:${100/fitZoom}%">${summary}${education}${experience}${skills}${projects}${achievements}${references}</div>`;updateA4PreviewFrames();
 }
 $('#agree').onchange=()=>$('#continue').disabled=!$('#agree').checked;$('#continue').onclick=()=>{$('#notice').hidden=true;$('#app').hidden=false;setForm()};$('#profile').addEventListener('input',e=>{if(e.target.name==='program')toggleOther();readForm()});$('#profile').addEventListener('change',()=>{toggleOther();readForm()});
 function validatePart1(){const form=$('#profile');$('#error').textContent='';for(const n of ['firstName','lastName','collegeRollNo','collegeEmail','personalEmail','phone','program']){const f=form.elements[n];if(!f.value.trim()||!f.checkValidity()){f.focus();f.reportValidity();$('#error').textContent='Please complete the required demographic fields above before reviewing.';return false}}if(data.program==='Others'&&!data.otherProgram.trim()){form.elements.otherProgram.focus();form.elements.otherProgram.reportValidity();$('#error').textContent='Please enter your program name.';return false}return true}
