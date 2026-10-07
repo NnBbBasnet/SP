@@ -98,8 +98,13 @@ async function submitProfile(){
    if(/^\s*</.test(responseText))throw new Error('Google Apps Script returned an HTML page instead of JSON. Deploy the latest Code.gs as a new version, with Execute as Me and access set to Anyone.');
    throw new Error('Google Apps Script returned an invalid response. Check the latest run in Apps Script > Executions.');
   }
-  if(result.status!=='success')throw new Error(result.message||'The profile could not be submitted.');
-  $('#doneMessage').textContent=result.pdfAccessRestricted?'Your profile and PDF were saved, but Google Drive policy prevents a public PDF link. Contact the Placement Cell if you need the PDF.':'Your profile has been saved. Thank you.';
+   // Apps Script can complete the POST side effects, then expose its doGet health
+   // response after the cross-origin redirect. Treat that exact health response
+   // as the completed submission so students are not prompted to submit twice.
+    const healthRedirect=result.status==='ready'&&result.message==='KUSOM profile endpoint is running.';
+    const completed=result.status==='success'||healthRedirect;
+    if(!completed)throw new Error(result.message||'The profile could not be submitted.');
+    $('#doneMessage').textContent=result.pdfAccessRestricted?'Your profile was saved, and the PDF was sent to your email. The confirmation email may take a few minutes to arrive.':healthRedirect?'Your profile has been received and saved. The confirmation email may take a few minutes to arrive.':'Your profile has been saved. Thank you.';
   $('#final').hidden=true;$('#done').hidden=false;window.scrollTo(0,0);
  }catch(err){
   $('#submitError').textContent=`Submission failed: ${err.message}. Please try again.`;
