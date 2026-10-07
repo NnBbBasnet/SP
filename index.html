@@ -15,20 +15,20 @@
 .resume.a4-sheet{position:absolute;top:0;left:0;width:210mm;height:297mm;min-height:0;box-sizing:border-box;overflow:hidden;padding:8mm 9mm;border:0;border-radius:0;box-shadow:none;background:#fff;color:#273044;font:9.2pt/1.22 Arial,sans-serif;transform:scale(var(--a4-scale,1));transform-origin:top left;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .resume.a4-sheet:before{content:none}
 .resume.a4-sheet>.a4-watermark{position:absolute;z-index:0;top:85mm;left:57mm;width:90mm;height:75mm;object-fit:contain;opacity:.10;pointer-events:none}
-.resume.a4-sheet>.fit-content{position:relative;z-index:1}
+.resume.a4-sheet>.fit-content{position:relative;z-index:1;display:block!important;columns:1!important;column-count:1!important;column-width:auto!important;grid-template-columns:none!important}
 .resume.a4-sheet .resume-head{position:relative;min-height:32mm;margin:0 0 4mm;padding:7mm 8mm;border-radius:9px;background:linear-gradient(115deg,#5c1420,#762b38);color:#fff;box-shadow:none}
 .resume.a4-sheet .resume-head img{float:right;width:16mm;height:16mm;object-fit:contain;margin-left:5mm}
 .resume.a4-sheet .resume-head h2{margin:0 0 3mm;color:#fff;font-size:22.5pt;line-height:1.05;letter-spacing:.3pt;text-transform:none}
 .resume.a4-sheet .resume-head p{margin:1mm 0;color:#fff;font-size:8.8pt;line-height:1.25;overflow-wrap:anywhere}
 .resume.a4-sheet h3{margin:3mm 0 1.5mm;padding:0 0 1.4mm;border:0;border-bottom:1px solid #eadfe0;color:#5c1420;font-size:9.6pt;letter-spacing:.8pt;text-transform:uppercase}
 .resume.a4-sheet p{margin:1mm 0;font-size:9.2pt;line-height:1.22;overflow-wrap:anywhere}
-.resume.a4-sheet .item{display:block;width:100%;margin:1.2mm 0;padding:1.4mm 2mm;border:0;border-left:2px solid rgba(216,189,144,.55);border-radius:0 4px 4px 0;background:rgba(255,255,255,.08)!important;break-inside:auto;page-break-inside:auto}
+.resume.a4-sheet .item{display:block!important;width:100%!important;grid-column:1/-1!important;margin:1.2mm 0;padding:1.4mm 2mm;border:0;border-left:2px solid rgba(216,189,144,.55);border-radius:0 4px 4px 0;background:rgba(255,255,255,0)!important;break-inside:auto;page-break-inside:auto}
 .resume.a4-sheet .item p{font-size:8.6pt;line-height:1.16}
 .resume.a4-sheet .sub{color:#667085;font-size:9.2pt;font-style:italic}
-.resume.a4-sheet .summary{margin:0 0 2mm;padding:2.5mm 3mm;border-left:2px solid rgba(216,189,144,.55);border-radius:0 5px 5px 0;background:rgba(255,255,255,.08)!important}
+.resume.a4-sheet .summary{margin:0 0 2mm;padding:2.5mm 3mm;border-left:2px solid rgba(216,189,144,.55);border-radius:0 5px 5px 0;background:rgba(255,255,255,0)!important}
 .resume.a4-sheet .skills{display:flex;flex-wrap:wrap;gap:1mm}
-.resume.a4-sheet .skill{display:inline-block;margin:.4mm;padding:1mm 2mm;border:1px solid rgba(234,223,224,.7);border-radius:99px;background:rgba(255,255,255,.08)!important;color:#5c1420;font-size:8.2pt}
-.resume.a4-sheet .resume-section{break-inside:auto;page-break-inside:auto}
+.resume.a4-sheet .skill{display:inline-block;margin:.4mm;padding:1mm 2mm;border:1px solid rgba(234,223,224,.7);border-radius:99px;background:rgba(255,255,255,0)!important;color:#5c1420;font-size:8.2pt}
+.resume.a4-sheet .resume-section{display:block!important;width:100%!important;grid-column:1/-1!important;column-span:all!important;columns:1!important;break-inside:auto;page-break-inside:auto}
 @media print{body{margin:0;background:#fff}.top,#notice,#app,#done,#final>.warning,#final>.row,#submitError{display:none!important}main.wrap{max-width:none;margin:0;padding:0}#final{display:block!important;width:210mm;height:297mm;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important}#final .a4-frame{width:210mm;height:297mm;max-width:none;aspect-ratio:auto;margin:0;border:0;box-shadow:none}#finalResume{transform:none!important}}
 </style>
 </head>
