@@ -12,7 +12,7 @@
 <style id="a4-preview-styles">
 @page{size:A4 portrait;margin:0}
 .a4-frame{--a4-scale:1;position:relative;width:100%;max-width:210mm;aspect-ratio:210/297;overflow:hidden;margin:0 auto;background:#fff;border:1px solid #ded8d1;box-shadow:0 4px 16px #10182812}
-.resume.a4-sheet{position:absolute;top:0;left:0;width:210mm;height:297mm;min-height:0;box-sizing:border-box;overflow:hidden;padding:8mm 9mm;border:0;border-radius:0;box-shadow:none;background:#fff;color:#273044;font:9.2pt/1.22 Arial,sans-serif;transform:scale(var(--a4-scale,1));transform-origin:top left;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.resume.a4-sheet{position:absolute;top:0;left:0;width:210mm;height:297mm;min-height:0;box-sizing:border-box;overflow:hidden;padding:12mm 12mm;border:0;border-radius:0;box-shadow:none;background:#fff;color:#273044;font:9.2pt/1.22 Arial,sans-serif;transform:scale(var(--a4-scale,1));transform-origin:top left;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .resume.a4-sheet:before{content:none}
 .resume.a4-sheet>.a4-watermark{position:absolute;z-index:0;top:85mm;left:57mm;width:90mm;height:75mm;object-fit:contain;opacity:.10;pointer-events:none}
 .resume.a4-sheet>.fit-content{position:relative;z-index:1;display:block!important;columns:1!important;column-count:1!important;column-width:auto!important;grid-template-columns:none!important}
@@ -33,7 +33,7 @@
 .resume.a4-sheet .project-meta,.resume.a4-sheet .achievement-meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 2mm;width:100%;max-width:100%;overflow-wrap:anywhere}
 .resume.a4-sheet .project-meta>* ,.resume.a4-sheet .achievement-meta>*{display:inline}
 .resume.a4-sheet .project-description,.resume.a4-sheet .achievement-description{display:block;width:100%;max-width:100%;white-space:normal;overflow-wrap:anywhere}
-.resume.a4-sheet .reference-one-line{display:block;width:100%;max-width:100%;white-space:nowrap;overflow:visible;font-size:8.2pt;line-height:1.1}
+.resume.a4-sheet .reference-one-line{display:block;width:100%;max-width:100%;white-space:normal;overflow-wrap:anywhere;font-size:8.2pt;line-height:1.1}
 .resume.a4-sheet .wide-description{display:block;width:100%;max-width:100%;white-space:normal;overflow-wrap:anywhere}
 @media print{body{margin:0;background:#fff}.top,#notice,#app,#done,#final>.warning,#final>.row,#submitError{display:none!important}main.wrap{max-width:none;margin:0;padding:0}#final{display:block!important;width:210mm;height:297mm;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important}#final .a4-frame{width:210mm;height:297mm;max-width:none;aspect-ratio:auto;margin:0;border:0;box-shadow:none}#finalResume{transform:none!important}}
 </style>
@@ -69,7 +69,7 @@ const LOGO_DATA='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnoAAAJ6CAYAAAC/q
 const $=s=>document.querySelector(s), esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let data={step:1,firstName:'',middleName:'',lastName:'',collegeRollNo:'',collegeEmail:'',personalEmail:'',phone:'',program:'',otherProgram:'',dob:'',address:'',linkedinUrl:'',major:'',minor:'',careerObjective:'',education:[],experience:[],skills:[],projects:[],achievements:[],references:[]};
 // Keep the browser preview's A4 fit steps aligned with the PDF constants in Code.gs.
-const PDF_MAX_FONT_PT=9.2,PDF_MIN_FONT_PT=6.6,PDF_FONT_STEP_PT=.2,PDF_ESTIMATED_HEIGHT_LIMIT_PT=610,PDF_ESTIMATE_EXPONENT=.30;
+const PDF_MAX_FONT_PT=9.2,PDF_MIN_FONT_PT=6.6,PDF_FONT_STEP_PT=.2,PDF_ESTIMATED_HEIGHT_LIMIT_PT=590,PDF_ESTIMATE_EXPONENT=.30;
 // Remove any draft saved by the older version. This version never writes profile data to browser storage.
 try{localStorage.removeItem('kusom-public-profile-v1')}catch(e){}
 document.querySelectorAll('.logo-img').forEach(i=>{if(LOGO_DATA)i.src=LOGO_DATA});if(LOGO_DATA){$('#favicon').href=LOGO_DATA;document.documentElement.style.setProperty('--watermark',`url("${LOGO_DATA}")`)}
