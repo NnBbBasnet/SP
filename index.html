@@ -60,9 +60,12 @@ function renderPreview(){
  const profileChars=JSON.stringify([data.careerObjective,data.education,data.experience,data.skills,data.projects,data.achievements,data.references,data.address,data.linkedinUrl]).length;
  const profileItems=['education','experience','skills','projects','achievements','references'].reduce((n,k)=>n+(data[k]||[]).filter(o=>o&&Object.values(o).some(v=>String(v==null?'':v).trim()!=='' )).length,0);
  const density=profileChars>8000||profileItems>32?'micro':profileChars>5600||profileItems>23?'ultra':profileChars>3400||profileItems>15?'compact':'';
- const singleColumn=profileChars<=3400&&profileItems<=23;
+ const minColumnZoom=0.86;
+ const singleColumnLoad=Math.max(0,Math.min(1,Math.max((profileChars-1600)/2600,(profileItems-10)/18)));
+ const singleColumnZoom=1.055-(1.055-minColumnZoom)*singleColumnLoad;
+ const singleColumn=singleColumnZoom>minColumnZoom;
  $('#live').className='resume '+density+(singleColumn?' single-column':' two-column');
- const fitZoom=Math.max(0.62,Math.min(1.055,1.055-Math.max(0,profileChars-4700)/23000-Math.max(0,profileItems-25)*0.008));
+ const fitZoom=singleColumn?singleColumnZoom:Math.max(0.72,minColumnZoom-Math.max(0,profileChars-4200)/30000-Math.max(0,profileItems-28)*0.004);
  $('#live').style.zoom=fitZoom;
  let html=`<div class="resume-head"><h2>${esc(fullname)}</h2><p>${esc(prog||'Program')} Candidate · Roll No: ${esc(data.collegeRollNo||'—')}</p><p>College: ${esc(data.collegeEmail||'')} · Personal: ${esc(data.personalEmail||'')} · ${esc(data.phone||'')}</p>${data.major||data.minor?`<p>${data.major?`Major: ${esc(data.major)}`:''}${data.major&&data.minor?' · ':''}${data.minor?`Minor: ${esc(data.minor)}`:''}</p>`:''}${data.address?`<p>${esc(data.address)}</p>`:''}${data.linkedinUrl?`<p>${esc(data.linkedinUrl)}</p>`:''}</div>`;
  const section=(title,body)=>body?`<section class="resume-section"><h3>${title}</h3>${body}</section>`:'';
